@@ -42,7 +42,18 @@ def extract_text(file, file_type):
     else:
         return "Unsupported file type"
     
+generator = genai.GenerativeModel('gemini-1.0-pro')
+
+if "chat" not in st.session_state:
+    st.session_state.chat = generator.start_chat(history = [])
+
+if "messages" not in st.session_state:
+    st.session_state.messages = [] 
+
 def summarize_text(text):
+    prompt = "Please summarize the following text: \n" + text
+    response = st.session_state.chat.send_message(prompt) 
+    return response.text
 
 st.title("Document Summarizer - SummerEase")
 
